@@ -7,6 +7,8 @@ pydantic==1.*
 psutil>=5.9.1
 cryptography>=3.4.6
 aiofile>=3.7.4
-py4j>=0.10.9.5
+py4j>=0.10.9
 netifaces>=0.11.0
 python-dateutil>=2.8.2
+coverage>=7.2.0
+flask>=2.0
