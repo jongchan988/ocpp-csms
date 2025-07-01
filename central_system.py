@@ -1,12 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2020 - 2024 Pionix GmbH and Contributors to EVerest
-import coverage
-import coverage_manager
-
-# coverage 객체는 모듈 전체에서 공유 가능하도록 초기화
-cov = coverage.Coverage(source=["central_systems"], branch=True, data_file=".coverage")
-cov.start()
-
 import asyncio
 import logging
 
@@ -17,24 +10,17 @@ import websockets
 import ssl
 from pathlib import Path
 import argparse
-import threading
+import signal
+
+def handle_exit_signal(signum, frame):
+    exit(0)
+
+signal.signal(signal.SIGINT, handle_exit_signal)
+signal.signal(signal.SIGTERM, handle_exit_signal)
 __version__ = "0.1.0"
 
 iso15118_certs = None
 reject_auth = False
-from flask import Flask, jsonify
-
-
-app = Flask(__name__)
-
-
-@app.route('/save_coverage', methods=['GET'])
-def save_coverage():
-    print(cov)
-    return coverage_manager.get_coverage_summary(cov)
-
-def run_flask():
-    app.run(host="0.0.0.0", port=9101)
 
 async def process_request(connection, request):
     logging.info(f'request:\n{request}')
@@ -156,8 +142,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    flask_thread = threading.Thread(target=run_flask)
-    flask_thread.start()
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

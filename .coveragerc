@@ -1,0 +1,4 @@
+[run]
+omit =
+    Josev/*
+    exi_generator.py

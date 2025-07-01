@@ -8,10 +8,8 @@ RUN apt-get update && \
 WORKDIR /usr/local/apps/ocpp-csms
 COPY . /usr/local/apps/ocpp-csms
 
-RUN git clone --recurse-submodules https://github.com/EVerest/ocpp-csms.git
-
 WORKDIR /usr/local/apps/ocpp-csms
 RUN python3 -m pip install -r requirements.txt
 EXPOSE 9100 9101
 
-CMD ["coverage", "run", "--branch", "--append", "central_system.py", "--certs", "./certs"]
+CMD ["./start_server.sh"]
